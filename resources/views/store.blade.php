@@ -142,78 +142,20 @@
         <h2 class="text-center mb-5">Featured Products</h2>
         <div class="row">
           <!-- Product 1 -->
+          @foreach ($products as $product)
           <div class="col-md-4">
-            <div class="card" data-toggle="modal" data-target="#productModal1">
-              <img
-                src="https://m.media-amazon.com/images/G/01/HST/Homepage/2-23-2023/desktop/Rectangle_323_1.png"
-                class="card-img-top"
-                alt="Product 1"
-              />
-              <div class="card-body">
-                <h5 class="card-title">Product 1</h5>
-                <p class="card-text">Description of Product 1</p>
-                <a href="#" class="btn btn-primary">View Details</a>
+              <div class="card">
+                  <img src="{{ asset('product/' . $product->image) }}" class="card-img-top" alt="{{ $product->title }}">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ $product->title }}</h5>
+                      <p class="card-text">{{ $product->description }}</p>
+                      <a href="#" class="btn btn-primary">Add to cart</a>
+                  </div>
               </div>
-            </div>
           </div>
-          <div class="col-md-4">
-            <div class="card" data-toggle="modal" data-target="#productModal1">
-              <img
-                src="https://m.media-amazon.com/images/G/01/HST/Homepage/2-23-2023/Group_40862.png"
-                class="card-img-top"
-                alt="Product 1"
-              />
-              <div class="card-body">
-                <h5 class="card-title">Product 1</h5>
-                <p class="card-text">Description of Product 1</p>
-                <a href="#" class="btn btn-primary">View Details</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card" data-toggle="modal" data-target="#productModal1">
-              <img
-                src="https://images-na.ssl-images-amazon.com/images/G/01/PAE/HBA/FSA-HSA_Storefront/Desktop/Desktop_Explore_Baby_New_Parents_2X.jpg"
-                class="card-img-top"
-                alt="Product 1"
-              />
-              <div class="card-body">
-                <h5 class="card-title">Product 1</h5>
-                <p class="card-text">Description of Product 1</p>
-                <a href="#" class="btn btn-primary">View Details</a>
-              </div>
-            </div>
-          </div>
-          <!-- Product Modal 1 -->
-          <div
-            class="modal fade modal-wide"
-            id="productModal1"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="productModal1Label"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="productModal1Label">
-                    Product 1 Details
-                  </h5>
-                  <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Extended information about Product 1...</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
+@endforeach
+
           <!-- Add more products and modals as needed -->
         </div>
       </div>
