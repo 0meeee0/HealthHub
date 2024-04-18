@@ -42,7 +42,6 @@
         max-width: 80%;
       }
 
-      /* Custom animations */
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -141,7 +140,6 @@
       <div class="container">
         <h2 class="text-center mb-5">Featured Products</h2>
         <div class="row">
-          <!-- Product 1 -->
           @foreach ($products as $product)
           <div class="col-md-4">
               <div class="card">
@@ -156,7 +154,6 @@
 
 @endforeach
 
-          <!-- Add more products and modals as needed -->
         </div>
       </div>
     </section>
