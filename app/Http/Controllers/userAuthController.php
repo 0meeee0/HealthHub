@@ -47,21 +47,17 @@ class userAuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
+public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
-            $request->session()->put('loginId', $user->id);
-            if($user->role=='admin'){
-                return redirect('dashboard');
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('dashboard');
             }
-            return redirect('home');
+            return redirect()->route('home');
         } else {
             return redirect()->back()->withErrors([
                 'email' => 'These credentials do not match our records.',

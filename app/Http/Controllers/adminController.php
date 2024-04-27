@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class adminController extends Controller
 {
@@ -79,7 +81,48 @@ class adminController extends Controller
 
     public function productStore(){
         $products = Product::all();
-        return view('store', compact('products'));
+        $categories = Category::all();
+        return view('store', compact('products', 'categories'));
     }
 
+    public function addCart(Request $request, $id){
+        // dd(Auth::user()->username);
+        if(Auth::user()->id){
+            $product=Product::find($id);
+            $cart = new Cart;
+
+            $user = Auth::user();
+
+            $cart->userId = $user->id;
+            $cart->name = $user->username;
+            $cart->email = $user->email;
+            $cart->productTitle = $product->title;
+            $cart->price= $product->price * $request->quantity;
+            $cart->image= $product->image;
+            $cart->productId = $product->id;
+            $cart->quantity= $request->quantity;
+
+            $cart->save();
+
+            return redirect()->back();
+            
+            
+        }else{
+            dd('user not connected');
+        }
+    }
+
+    public function showCart(Request $request) {
+        $user = Auth::user();
+        // dd($user->id);
+        $cart = Cart::where('userId', Auth::user()->id)->get();
+        return view('cartPage', compact('cart'));
+    }
+
+    public function removeCart($id){
+        $cart = Cart::find($id);
+        $cart->delete();
+        
+        return redirect()->back();
+    }
 }

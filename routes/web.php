@@ -23,6 +23,7 @@ Route::get('register', [userAuthController::class, 'showRegistrationForm'])->nam
 Route::post('register', [userAuthController::class, 'register']);
 Route::get('login', [UserAuthController::class, 'showLoginForm']);
 Route::post('/login', [UserAuthController::class, 'login'])->middleware('web')->name('login');
+// Route::post('/logout', [UserAuthController::class, 'logout'])->middleware('web')->name('logut');
 
 Route::post('logout', [UserAuthController::class, 'logout'])->name('logout');
 Route::get('home', [userAuthController::class, 'home'])->name('home');
@@ -36,4 +37,8 @@ Route::post('addProduct', [adminController::class, 'addProduct'])->name('addProd
 Route::get('editProduct/{id}', [adminController::class, 'editProduct'])->name('editProduct');
 Route::get('deleteProduct/{id}', [adminController::class, 'deleteProduct'])->name('deleteProduct');
 
-Route::get('productStore', [adminController::class, 'productStore'])->name('productStore');
+Route::get('productStore', [adminController::class, 'productStore']);
+Route::POST('addCart/{id}', [adminController::class, 'addCart'])->name('addCart');
+
+Route::GET('showCart', [adminController::class, 'showCart'])->name('showCart');
+Route::GET('removeCart/{id}', [adminController::class, 'removeCart'])->name('removeCart');

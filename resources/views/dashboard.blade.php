@@ -99,32 +99,43 @@
         <section class="mt-5">
             <div class="row">
                 <div class="col">
-                    <h3>Available Categories</h3>
-                    @if(session()->has('message2'))
-                        <div class="alert alert-success">
-                            <button type="button" class="close" data-dismiss="alert" area-hidden="true">x</button>
-                            {{session()->get('message2')}}
-                        </div>
-                    @endif
-                    <ul>
-                        @foreach ($categories as $category)
-                            <li>
-                                <div class="d-flex  align-items-center">
-                                    <span>{{ $category->catName }}</span>
-                                    <a class="btn btn-danger" href="{{ url('deleteCat', $category->id) }}">Delete</a>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
+                <h3>Available Categories</h3>
+                @if(session()->has('message2'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session()->get('message2') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($categories as $category)
+                        <tr>
+                            <td>{{ $category->catName }}</td>
+                            <td>
+                                <a class="btn btn-danger" href="{{ url('deleteCat', $category->id) }}">Delete</a>
+                                <a class="btn btn-warning" href="{{ url('deleteCat', $category->id) }}">Edit</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
                 <div class="col">
                     @if(session()->has('message'))
-                        <div class="alert alert-success">
-                            <button type="button" class="close" data-dismiss="alert" area-hidden="true">x</button>
-                            {{session()->get('message')}}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session()->get('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
+
                     <h3>Add New Category</h3>
                     <form method="POST" action="{{ route('addCategory') }}">
                         @csrf
@@ -141,10 +152,10 @@
 
     <div class="container mt-4">
         <section id="show-users" class="mt-5">
-            <h2>Meds</h2>
+            <h2></h2>
             <div class="container mt-4">
                 <section id="show-products" class="mt-5">
-                    <h2>Show Products</h2>
+                    <h2>Medicine List</h2>
                     <table class="table">
                         <thead>
                             <tr>
