@@ -103,8 +103,9 @@
                 <h6 class="card-subtitle mb-2 text-muted">Comments:</h6>
                 <div class="media">
                   <img
-                    src="https://via.placeholder.com/50"
+                    src="https://banner2.cleanpng.com/20180329/zue/kisspng-computer-icons-user-profile-person-5abd85306ff7f7.0592226715223698404586.jpg"
                     class="mr-3 rounded-circle"
+                    width="50"
                     alt="User Avatar"
                   />
                   <div class="media-body">
