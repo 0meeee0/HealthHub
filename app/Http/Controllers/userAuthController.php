@@ -52,7 +52,6 @@ public function login(Request $request)
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Authentication passed...
             $user = Auth::user();
             if ($user->role === 'admin') {
                 return redirect()->route('dashboard');
@@ -74,7 +73,7 @@ public function login(Request $request)
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/home');
     }
 
     

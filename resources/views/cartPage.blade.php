@@ -50,14 +50,19 @@
 
 <section class="h-100 h-custom" style="background-color: #eee;">
   <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-lg-7">
         <div class="card">
           <div class="card-body p-4">
-
+            @if(session()->has('message'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session()->get('message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
             <div class="row">
 
-              <div class="col-lg-7">
+              <div class="col-lg-12">
                 <h5 class="mb-3"><a href="#" onclick="history.back()" class="text-body"><i
                       class="fas fa-long-arrow-alt-left me-2"></i>Back to Store</a></h5>
                 <hr>
@@ -68,7 +73,9 @@
                     <p class="mb-4">You have  {{ count($cart) }} items in your cart</p>
                   </div>
                 </div>
-
+                <?php 
+                    $totalPrice=0
+                ?>
                 @foreach ($cart as $c)
                 <div class="card mb-3 shadow">
                   <div class="card-body">
@@ -96,20 +103,50 @@
                     </div>
                   </div>
                 </div>
+                    <?php 
+                        $totalPrice+= $c->price 
+                    ?>
                 @endforeach
               </div>
             </div>
-            <div class="d-flex justify-content-between w-50">
-              <button class="btn btn-outline-success shadow">Cash on Delivery 💵</button>
-              <button class="btn btn-outline-info shadow">Pay Online</button>
 
+            <!-- Address Input Section -->
+            <div class="row mt-4">
+              <div class="col-lg-12">
+                <h5 class="mb-3">Delivery Address</h5>
+                <form method="POST" action="{{ route('checkout') }}">
+                  @csrf
+                  <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input required class="form-control" name="address" id="address" placeholder="Enter your address">
+                  </div>
+                  <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-outline-success shadow">Cash on Delivery 💵</button>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <p class="mb-1">Shipping</p>
+                        <p class="mb-4">Free</p>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <p class="mb-1">Total</p>
+                        <p class="mb-4">{{ $totalPrice }} DH</p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+
+            <!-- Total and Payment Section -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 
 </body>

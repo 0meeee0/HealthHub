@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +17,9 @@ class adminController extends Controller
     {
         $categories = Category::all();
         $products = Product::all();
-        return view('dashboard', compact('categories', 'products'));
+        $users = User::where('role', 'user')->get();
+        $orders = Order::all();
+        return view('dashboard', compact('categories', 'products', 'users', 'orders'));
     }
     
     public function addCategory(Request $request)
@@ -122,7 +126,36 @@ class adminController extends Controller
     public function removeCart($id){
         $cart = Cart::find($id);
         $cart->delete();
-        
+
         return redirect()->back();
     }
+
+    public function checkout(Request $request){
+    $user = Auth::user();
+    // dd($user);
+    $cartItems = Cart::where('userId', $user->id)->get();
+
+    foreach($cartItems as $cartItem)
+    {
+        $order = new Order;
+        $order->name = $user->username;
+        $order->email = $user->email;
+        $order->user_id = $user->id;
+        $order->product_name = $cartItem->productTitle;
+        $order->quantity = $cartItem->quantity;
+        $order->price = $cartItem->price;
+        $order->image = $cartItem->image;
+        $order->product_id = $cartItem->productId;
+        $order->address = $request->address;
+        $order->payment_status = "Cash on Delivery";
+        $order->dilevery_status = "Pending";
+
+        $order->save();
+
+        $cartItem->delete();
+    }
+
+    return redirect()->back()->with('message', 'Order received! Please wait for the order to be processed.');
+}
+
 }

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medicine Store</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -104,17 +105,43 @@
 
     <!-- Featured Products Section -->
     <section class="featured-products py-5 fadeIn">
-        <div class="container">
-            <h2 class="text-center mb-5">Featured Products</h2>
-            <div class="row">
-                @foreach ($products as $product)
-                <div class="col-md-4">
-                    <div class="card">
-                        <img height="300" src="{{ asset('product/' . $product->image) }}" class="card-img-top" alt="{{ $product->title }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $product->title }}</h5>
-                            <p class="card-text">{{ $product->description }}</p>
-                            <p class="card-text">{{ $product->price }} DH</p>
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Products</h2>
+        <div class="row">
+            @foreach ($products as $product)
+            <div class="col-md-4">
+                <div class="card">
+                    <img height="300" src="{{ asset('product/' . $product->image) }}" class="card-img-top" alt="{{ $product->title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $product->title }}</h5>
+                        <p class="card-text">{{ $product->category }}</p>
+                        <p class="card-text">{{ $product->price }} DH</p>
+                        {{-- <form action="{{ route('addCart', $product->id) }}" method="POST">
+                                @csrf
+                                <input type="number" name="quantity" value="1" min="1">
+                                <button type="submit" class="btn btn-primary">Add to cart</button>
+                            </form>
+                        <!-- Button trigger modal --> --}}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="productModal{{ $product->id }}" tabindex="-1" aria-labelledby="productModalLabel{{ $product->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productModalLabel{{ $product->id }}">{{ $product->title }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img width="200" src="{{ asset('product/' . $product->image) }}" class="img-fluid mb-3" alt="{{ $product->title }}">
+                            <p>Description: {{ $product->description }}</p>
+                            <p>Category: {{ $product->category }}</p>
+                            <p>Price: {{ $product->price }} DH</p>
                             <form action="{{ route('addCart', $product->id) }}" method="POST">
                                 @csrf
                                 <input type="number" name="quantity" value="1" min="1">
@@ -123,10 +150,12 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-4">

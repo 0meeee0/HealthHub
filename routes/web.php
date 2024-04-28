@@ -15,9 +15,7 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserAuthController::class, 'home'])->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [UserAuthController::class, 'showRegistrationForm'])->name('register');
@@ -25,11 +23,13 @@ Route::middleware('guest')->group(function () {
     Route::get('login', [UserAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [UserAuthController::class, 'login']);
 });
+Route::get('about', function(){
+    return view('about');
+});
 
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('logout', [UserAuthController::class, 'logout'])->name('logout');
 
-    Route::get('home', [UserAuthController::class, 'home'])->name('home');
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
     Route::post('addCategory', [AdminController::class, 'addCategory'])->name('addCategory');
@@ -45,4 +45,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     
     Route::get('showCart', [AdminController::class, 'showCart'])->name('showCart');
     Route::get('removeCart/{id}', [AdminController::class, 'removeCart'])->name('removeCart');
+
+    Route::post('checkout', [AdminController::class, 'checkout'])->name('checkout');
 });
