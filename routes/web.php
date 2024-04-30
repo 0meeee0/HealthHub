@@ -1,8 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\searchController;
+use App\Http\Controllers\UserAuthController;
+use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +37,9 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
-    Route::post('addCategory', [AdminController::class, 'addCategory'])->name('addCategory');
-    Route::get('categories', [AdminController::class, 'showCategories'])->name('showCategories');
-    Route::get('deleteCat/{id}', [AdminController::class, 'deleteCat'])->name('deleteCat');
+    Route::post('addCategory', [CategoryController::class, 'addCategory'])->name('addCategory');
+    Route::get('categories', [CategoryController::class, 'showCategories'])->name('showCategories');
+    Route::get('deleteCat/{id}', [CategoryController::class, 'deleteCat'])->name('deleteCat');
     
     Route::post('addProduct', [AdminController::class, 'addProduct'])->name('addProduct');
     Route::get('editProduct/{id}', [AdminController::class, 'editProduct'])->name('editProduct');
@@ -47,4 +52,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('removeCart/{id}', [AdminController::class, 'removeCart'])->name('removeCart');
 
     Route::post('checkout', [AdminController::class, 'checkout'])->name('checkout');
+
+    Route::get('showPost',[PostController::class, 'index'])->name('showPost');
+    Route::post('addPost',[PostController::class, 'store'])->name('addPost');
+    Route::post('addComment',[PostController::class, 'addComment'])->name('addComment');
+
+    Route::get('search',[searchController::class, 'search'])->name('search');
+    Route::get('filterCategory',[searchController::class, 'filterCategory'])->name('filterCategory');
 });

@@ -15,14 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('product_name');
             $table->string('quantity');
             $table->string('price');
             $table->string('image');
-            $table->string('product_id');
+            $table->unsignedBigInteger('product_id');
             $table->string('payment_status');
             $table->string('dilevery_status');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -22,52 +22,35 @@ class adminController extends Controller
         return view('dashboard', compact('categories', 'products', 'users', 'orders'));
     }
     
-    public function addCategory(Request $request)
-    {
-        // dd($request);
-        $data = new Category();
-        $data->catName = $request->catName;
-        $data->save();
-
-        return redirect()->back()->with('message','Category added succesfully');
-    }
-    
-    public function deleteCat($category)
-    {
-        $categories = Category::find($category);
-        $categories->delete();
-        return redirect()->back()->with('message2','Category deleted succesfully');
-    }
     
     public function addProduct(Request $request)
     {
+        // dd($request->category_id);
         $request->validate([
             'title' => 'required',
-            'category' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required',
             'quantity' => 'required|integer',
             'description' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        if ($request->hasFile('image')) {
+          if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move('product', $imageName);
+             }
 
-            $product = new Product();
-            $product->title = $request->title;
-            $product->category = $request->category;
-            $product->price = $request->price;
-            $product->quantity = $request->quantity;
-            $product->description = $request->description;
-            $product->image = $imageName;
-            $product->save();
+        $product = new Product();
+        $product->title = $request->title;
+        $product->category_id = $request->category_id;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        $product->description = $request->description;
+        $product->image = $imageName;
+        $product->save();
 
-            return redirect()->back()->with('message', 'Product added successfully');
-        } else {
-            return redirect()->back()->with('error', 'Image upload failed');
-        }
+        return redirect()->back()->with('message', 'Product added successfully');
     }
 
     public function deleteProduct($id){
@@ -97,13 +80,13 @@ class adminController extends Controller
 
             $user = Auth::user();
 
-            $cart->userId = $user->id;
+            $cart->user_id = $user->id;
             $cart->name = $user->username;
             $cart->email = $user->email;
             $cart->productTitle = $product->title;
             $cart->price= $product->price * $request->quantity;
             $cart->image= $product->image;
-            $cart->productId = $product->id;
+            $cart->product_id = $product->id;
             $cart->quantity= $request->quantity;
 
             $cart->save();
@@ -119,7 +102,7 @@ class adminController extends Controller
     public function showCart(Request $request) {
         $user = Auth::user();
         // dd($user->id);
-        $cart = Cart::where('userId', Auth::user()->id)->get();
+        $cart = Cart::where('user_id', Auth::user()->id)->get();
         return view('cartPage', compact('cart'));
     }
 
@@ -133,7 +116,7 @@ class adminController extends Controller
     public function checkout(Request $request){
     $user = Auth::user();
     // dd($user);
-    $cartItems = Cart::where('userId', $user->id)->get();
+    $cartItems = Cart::where('user_id', $user->id)->get();
 
     foreach($cartItems as $cartItem)
     {
@@ -145,7 +128,7 @@ class adminController extends Controller
         $order->quantity = $cartItem->quantity;
         $order->price = $cartItem->price;
         $order->image = $cartItem->image;
-        $order->product_id = $cartItem->productId;
+        $order->product_id = $cartItem->product_id;
         $order->address = $request->address;
         $order->payment_status = "Cash on Delivery";
         $order->dilevery_status = "Pending";

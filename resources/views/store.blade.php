@@ -76,29 +76,29 @@
     <section class="filter-section">
         <div class="container">
             <h4>Filter Products</h4>
-            <div class="row">
+            <div class="row d-flex justify-content-center">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Search...">
+                    <form action="{{ route('search') }}" method="GET">
+                        @csrf
+                        <input type="text" name="title" class="form-control" placeholder="Search...">
+                    </form>
+                    
                 </div>
                 <div class="col-md-3">
-                    <select class="form-control">
-                        <option>Category</option>
-                        <option>Supplements</option>
-                        <option>Medicines</option>
-                        <option>Vitamins</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-control">
-                        <option>Price Range</option>
-                        <option>$0 - $50</option>
-                        <option>$50 - $100</option>
-                        <option>$100+</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-primary">Apply Filters</button>
-                </div>
+                    <form action="{{ route('filterCategory') }}" method="GET">
+                        @csrf
+                        <select name="category" class="form-control">
+                            <option value="All">All</option>
+                            @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->catName }}</option>
+                            @endforeach
+                            
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
@@ -106,15 +106,15 @@
     <!-- Featured Products Section -->
     <section class="featured-products py-5 fadeIn">
     <div class="container">
-        <h2 class="text-center mb-5">Featured Products</h2>
+        <h2 class="text-center mb-5">Featured Medicines</h2>
         <div class="row">
             @foreach ($products as $product)
             <div class="col-md-4">
-                <div class="card">
+                <div class="card mb-3">
                     <img height="300" src="{{ asset('product/' . $product->image) }}" class="card-img-top" alt="{{ $product->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $product->title }}</h5>
-                        <p class="card-text">{{ $product->category }}</p>
+                        <p class="card-text">{{ $product->category->catName }}</p>
                         <p class="card-text">{{ $product->price }} DH</p>
                         {{-- <form action="{{ route('addCart', $product->id) }}" method="POST">
                                 @csrf
@@ -140,7 +140,7 @@
                         <div class="modal-body">
                             <img width="200" src="{{ asset('product/' . $product->image) }}" class="img-fluid mb-3" alt="{{ $product->title }}">
                             <p>Description: {{ $product->description }}</p>
-                            <p>Category: {{ $product->category }}</p>
+                            <p>Category: {{ $product->category->catName }}</p>
                             <p>Price: {{ $product->price }} DH</p>
                             <form action="{{ route('addCart', $product->id) }}" method="POST">
                                 @csrf
@@ -166,7 +166,6 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

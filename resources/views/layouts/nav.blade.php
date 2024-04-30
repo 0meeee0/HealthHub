@@ -5,6 +5,7 @@
     />
     
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
@@ -18,7 +19,7 @@
           <a class="nav-link" href="{{ url('productStore') }}">Store</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Community</a>
+          <a class="nav-link" href="{{ url('showPost') }}">Community</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url('about') }}">About</a>

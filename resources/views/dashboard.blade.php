@@ -57,10 +57,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">Category</label>
-                            <select class="form-select" id="category" name="category" required>
+                            <select class="form-select" id="category" name="category_id" required>
                                 <!-- Options for categories -->
                                 @foreach ($categories as $category)
-                                <option value="{{ $category->catName }}">{{ $category->catName }}</option>
+                                <option value="{{ $category->id }}">{{ $category->catName }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -186,7 +186,7 @@
                             @foreach ($products as $product)
                             <tr>
                                 <td>{{ $product->title }}</td>
-                                <td>{{ $product->category }}</td>
+                                <td>{{ $product->category->catName }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->description }}</td>
                                 <td>{{ $product->quantity }}</td>

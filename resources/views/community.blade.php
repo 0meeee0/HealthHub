@@ -13,46 +13,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <link rel="stylesheet" href="styles.css" />
-    <!-- You can customize this file -->
   </head>
   <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand" href="#">HealthHub</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="about.html">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#services">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="community.html">Community</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    @include('layouts.nav')
 
     <!-- Community Section -->
     <section id="community" class="py-5">
@@ -62,11 +26,13 @@
             <h2 class="mb-4">Community Forum</h2>
 
             <!-- Post Form -->
-            <form>
+            <form action="{{ route('addPost') }}" method="POST">
+              @csrf
               <div class="form-group">
                 <label for="postTitle">Post Title</label>
                 <input
                   type="text"
+                  name="title"
                   class="form-control"
                   id="postTitle"
                   placeholder="Enter post title"
@@ -75,6 +41,7 @@
               <div class="form-group">
                 <label for="postContent">Post Content</label>
                 <textarea
+                  name="content"
                   class="form-control"
                   id="postContent"
                   rows="5"
@@ -87,74 +54,58 @@
             <hr />
 
             <!-- Posts -->
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title">Post Title</h5>
-                <p class="card-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Mauris volutpat, ipsum nec lacinia congue, nunc lorem tempor
-                  quam, in molestie dui leo non libero.
-                </p>
-                <p class="card-text">
-                  <small class="text-muted">Posted by Mehdi - 1 hour ago</small>
-                </p>
-                <hr />
-                <!-- Comment Section -->
-                <h6 class="card-subtitle mb-2 text-muted">Comments:</h6>
-                <div class="media">
-                  <img
-                    src="https://banner2.cleanpng.com/20180329/zue/kisspng-computer-icons-user-profile-person-5abd85306ff7f7.0592226715223698404586.jpg"
-                    class="mr-3 rounded-circle"
-                    width="50"
-                    alt="User Avatar"
-                  />
-                  <div class="media-body">
-                    <h6 class="mt-0">Commenter Name</h6>
-                    Comment goes here
-                  </div>
+        @foreach ($posts as $post)
+            <div id="post-{{ $post->id }}" class="card mb-3 shadow">
+                <div class="card-body bg-light">
+                    <h5 class="card-title">{{ $post->title }}</h5>
+                    <p class="card-text">{{ $post->content }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">Posted by {{ $post->user->username }} - {{ $post->created_at->diffForHumans() }}</small>
+                    </p>
+                    <hr />
+                    <!-- Comment Section -->
+                    <h6 class="card-subtitle mb-2 text-muted">Comments:</h6>
+                    <!-- Display existing comments -->
+                    @foreach ($post->comments as $comment)
+                        <div class="media">
+                            <img src="https://banner2.cleanpng.com/20180329/zue/kisspng-computer-icons-user-profile-person-5abd85306ff7f7.0592226715223698404586.jpg"
+                                class="mr-3 rounded-circle"
+                                width="50"
+                                alt="User Avatar"/>
+                            <div class="media-body mb-2">
+                                <h6 class="mt-0"> >{{ $comment->user->username }}</h6>
+                                <p class="mb-0">{{ $comment->content }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                    <!-- Comment Form -->
+                    <div class="media">
+                        
+                        <div class="media-body">
+                            <h6 class="mt-0"></h6>
+                            <form action="{{ route('addComment') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                <input type="text" class="form-control" name="comment" placeholder="Enter your comment...">
+                                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title">Post Title</h5>
-                <p class="card-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Mauris volutpat, ipsum nec lacinia congue, nunc lorem tempor
-                  quam, in molestie dui leo non libero.
-                </p>
-                <p class="card-text">
-                  <small class="text-muted">Posted by Mehdi - 1 hour ago</small>
-                </p>
-                <hr />
-                <!-- Comment Section -->
-                <h6 class="card-subtitle mb-2 text-muted">Comments:</h6>
-                <!-- <div class="media">
-                  <img
-                    src="https://via.placeholder.com/50"
-                    class="mr-3 rounded-circle"
-                    alt="User Avatar"
-                  />
-                  <div class="media-body">
-                    <h6 class="mt-0">Commenter Name</h6>
-                    Comment content goes here...
-                  </div>
-                </div> -->
-              </div>
-            </div>
+        @endforeach
 
-            <!-- Add more posts here -->
           </div>
           <div class="col-md-4">
             <h3 class="mb-4">Recent Topics</h3>
             <ul class="list-group">
-              <li class="list-group-item">Topic 1</li>
-              <li class="list-group-item">Topic 2</li>
-              <li class="list-group-item">Topic 3</li>
-              <li class="list-group-item">Topic 4</li>
-              <li class="list-group-item">Topic 5</li>
+                @foreach ($recentTopics as $topic)
+                    <li class="list-group-item">
+                        <a href="#" onclick="scrollToPost({{ $topic->id }})">{{ $topic->title }}</a>
+                    </li>
+                @endforeach
             </ul>
-          </div>
+        </div>
         </div>
       </div>
     </section>
@@ -166,6 +117,14 @@
       </div>
     </footer>
 
+    <script>
+      function scrollToPost(postId) {
+          var element = document.getElementById('post-' + postId);
+          if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+      }
+    </script>
     <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

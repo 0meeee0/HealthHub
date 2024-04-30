@@ -15,14 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
-            $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('productTitle')->nullable();
             $table->string('quantity')->nullable();
             $table->string('price')->nullable();
             $table->string('image')->nullable();
-            $table->string('productId')->nullable();
-            $table->string('userId')->nullable();
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
